@@ -1,14 +1,8 @@
-import {
-  DiscordImageAttachment,
-  DiscordFileAttachment,
-  DiscordAttachments,
-  DiscordAudioAttachment,
-} from '@skyra/discord-components-react';
-import React from 'react';
-import type { APIAttachment, APIMessage, Attachment as AttachmentType, Message } from 'discord.js';
+import { APIAttachment, APIMessage, Attachment as AttachmentType, Message } from 'discord.js';
 import type { RenderMessageContext } from '..';
 import { AttachmentTypes } from '../../types';
 import { formatBytes } from '../../utils/utils';
+import { DiscordImageAttachment } from './components/DiscordImage';
 
 /**
  * Renders all attachments for a message
@@ -19,13 +13,9 @@ import { formatBytes } from '../../utils/utils';
 export async function Attachments(props: { message: Message; context: RenderMessageContext }) {
   if (props.message.attachments.size === 0) return <></>;
 
-  return (
-    <DiscordAttachments slot="attachments">
-      {props.message.attachments.map((attachment, id) => (
-        <Attachment attachment={attachment} message={props.message} context={props.context} key={id} />
-      ))}
-    </DiscordAttachments>
-  );
+  return props.message.attachments.map((attachment, id) => (
+    <Attachment attachment={attachment} message={props.message} context={props.context} key={id} />
+  ));
 }
 
 /**
@@ -42,46 +32,52 @@ export async function Attachment({
   message: Message;
 }) {
   let url = attachment.url;
-  const name = attachment.name;
   const attachmentType = getAttachmentType(attachment);
   const [bytes, bytesUnit] = formatBytes(attachment.size);
 
   // if the attachment is an image, download it to a data url
   switch (attachmentType) {
-    case AttachmentTypes.Image:
-    case AttachmentTypes.Video: {
-      const width = attachment.width;
-      const height = attachment.height;
+    case AttachmentTypes.Image: {
+      const downloaded = await context.callbacks.resolveImageSrc(
+        attachment.toJSON() as APIAttachment,
+        message.toJSON() as APIMessage
+      );
 
-      if (attachmentType === AttachmentTypes.Image) {
-        const downloaded = await context.callbacks.resolveImageSrc(
-          attachment.toJSON() as APIAttachment,
-          message.toJSON() as APIMessage
-        );
-
-        if (downloaded !== null) {
-          url = downloaded ?? url;
-        }
+      if (downloaded !== null) {
+        url = downloaded ?? url;
       }
 
+      return <DiscordImageAttachment url={url} alt={attachment.name} key={attachment.id} />;
+    }
+
+    case AttachmentTypes.Video: {
+      return <discord-video-attachment key={attachment.id} slot="attachments" href={url} />;
+    }
+
+    case AttachmentTypes.Audio: {
       return (
-        <DiscordImageAttachment
+        <discord-audio-attachment
+          slot="attachments"
           key={attachment.id}
-          slot="attachment"
-          url={url}
-          alt={name ?? undefined}
-          width={width ?? undefined}
-          height={height ?? undefined}
+          href={url}
+          bytes={bytes}
+          bytesUnit={bytesUnit}
+          name={attachment.name}
         />
       );
     }
 
-    case AttachmentTypes.Audio: {
-      return <DiscordAudioAttachment key={attachment.id} href={url} bytes={bytes} bytesUnit={bytesUnit} />;
-    }
-
     case AttachmentTypes.File: {
-      return <DiscordFileAttachment key={attachment.id} href={url} bytes={bytes} bytesUnit={bytesUnit} />;
+      return (
+        <discord-file-attachment
+          slot="attachments"
+          key={attachment.id}
+          href={url}
+          bytes={bytes}
+          bytes-unit={bytesUnit}
+          name={attachment.name}
+        />
+      );
     }
   }
 }

@@ -27,6 +27,7 @@ export const ButtonStyleMapping = {
   [ButtonStyle.Link]: 'secondary',
 } as const;
 
+// TODO: minify
 export const globalStyles = `
   .discord-container {
     display: grid;
@@ -141,5 +142,9 @@ export const globalStyles = `
   .discord-header-text-guild {
   	font-size: 1.5rem;
   	font-weight: bold;
+  }
+
+  .reply-inline {
+    white-space: collapse;
   }
 `;

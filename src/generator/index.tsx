@@ -1,8 +1,7 @@
 import { type Awaitable, type Channel, type Message, type Role, type User } from 'discord.js';
 import { prerenderToNodeStream } from 'react-dom/static';
-import React from 'react';
 import { buildProfiles } from '../utils/buildProfiles';
-import { revealSpoiler, scrollToMessage } from '../static/client';
+import { ggSansFont, revealSpoiler, scrollToMessage } from '../static/client';
 import { readFileSync } from 'fs';
 import path from 'path';
 import { render as renderLit } from '@lit-labs/ssr';
@@ -10,6 +9,8 @@ import DiscordMessages from './transcript';
 import type { ResolveImageCallback } from '../downloader/images';
 import { streamToString } from '../utils/utils';
 import { collectResult } from '@lit-labs/ssr/lib/render-result';
+import { globalStyles } from './renderers/components/styles';
+import { DiscordAttachmentStyles } from './renderers/components/DiscordImage';
 
 // read the package.json file and get the @derockdev/discord-components-core version
 // TODO: update this
@@ -18,7 +19,7 @@ let discordComponentsVersion = '^4.0.2';
 try {
   const packagePath = path.join(__dirname, '..', '..', 'package.json');
   const packageJSON = JSON.parse(readFileSync(packagePath, 'utf8'));
-  discordComponentsVersion = packageJSON.dependencies['@skyra/discord-components-react'] ?? discordComponentsVersion;
+  discordComponentsVersion = packageJSON.dependencies['@skyra/discord-components-core'] ?? discordComponentsVersion;
   // eslint-disable-next-line no-empty
 } catch {} // ignore errors
 
@@ -48,6 +49,12 @@ export default async function render({ messages, channel, callbacks, ...options 
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="preconnect" href="https://cdn.jsdelivr.net/" />
+        <link rel="preconnect" href="https://cdn.discordapp.com" />
+
+        <style dangerouslySetInnerHTML={{ __html: ggSansFont }} />
+        <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
+        <style dangerouslySetInnerHTML={{ __html: DiscordAttachmentStyles }} />
 
         {/* favicon */}
         <link

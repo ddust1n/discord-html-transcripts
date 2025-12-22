@@ -1,10 +1,7 @@
-import { DiscordMessages as DiscordMessagesComponent } from '@skyra/discord-components-react';
 import { ChannelType } from 'discord.js';
-import React from 'react';
 import type { RenderMessageContext } from '.';
 import MessageContent, { RenderType } from './renderers/content';
 import DiscordMessage from './renderers/message';
-import { globalStyles } from './renderers/components/styles';
 import { TranscriptHeader } from './renderers/components/TranscriptHeader';
 
 /**
@@ -16,8 +13,7 @@ import { TranscriptHeader } from './renderers/components/TranscriptHeader';
  */
 export default async function DiscordMessages({ messages, channel, callbacks, ...options }: RenderMessageContext) {
   return (
-    <DiscordMessagesComponent style={{ minHeight: '100vh' }}>
-      <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
+    <discord-messages style={{ minHeight: '100vh' }}>
       <TranscriptHeader
         guildName={channel.isDMBased() ? 'Direct Messages' : channel.guild.name}
         guildIcon={channel.isDMBased() ? undefined : (channel.guild.iconURL({ size: 128 }) ?? undefined)}
@@ -67,6 +63,6 @@ export default async function DiscordMessages({ messages, channel, callbacks, ..
           </span>
         ) : null}
       </div>
-    </DiscordMessagesComponent>
+    </discord-messages>
   );
 }

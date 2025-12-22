@@ -1,11 +1,9 @@
-import { DiscordActionRow, DiscordFileAttachment, DiscordSpoiler } from '@skyra/discord-components-react';
 import {
   ComponentType,
   type ThumbnailComponent,
   type MessageActionRowComponent,
   type TopLevelComponent,
 } from 'discord.js';
-import React from 'react';
 import { parseDiscordEmoji } from '../../utils/utils';
 import DiscordSelectMenu from './components/Select Menu';
 import DiscordContainer from './components/Container';
@@ -31,13 +29,13 @@ export default function ComponentRow({
   switch (component.type) {
     case ComponentType.ActionRow:
       return (
-        <DiscordActionRow key={id}>
+        <discord-action-row key={id}>
           <>
             {component.components.map((nestedComponent, id) => (
               <Component component={nestedComponent} id={id} key={id} />
             ))}
           </>
-        </DiscordActionRow>
+        </discord-action-row>
       );
 
     case ComponentType.Container:
@@ -52,13 +50,13 @@ export default function ComponentRow({
       );
 
     case ComponentType.File: {
-      const attachmentComponent = <DiscordFileAttachment href={component.file.url} />;
+      const attachmentComponent = <discord-file-attachment href={component.file.url} />;
 
       if (component.spoiler) {
         return (
-          <DiscordSpoiler key={component.id} slot="attachment">
+          <discord-spoiler key={component.id} slot="attachment">
             {attachmentComponent}
-          </DiscordSpoiler>
+          </discord-spoiler>
         );
       } else {
         return attachmentComponent;

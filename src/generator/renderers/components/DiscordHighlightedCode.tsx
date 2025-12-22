@@ -1,5 +1,3 @@
-import * as React from 'react';
-import { DiscordCode } from '@skyra/discord-components-react';
 import hljs from 'highlight.js';
 
 export type CodeBlockProps = {
@@ -12,7 +10,7 @@ export function DiscordHighlightedCode(props: CodeBlockProps) {
     ? hljs.highlight(props.content, { language: props.language })
     : hljs.highlightAuto(props.content);
 
-  return <DiscordCode multiline dangerouslySetInnerHTML={{ __html: highlighted.value }} />;
+  return <discord-code multiline dangerouslySetInnerHTML={{ __html: highlighted.value }} />;
 }
 
 // TODO: add cdn for styles
