@@ -1,4 +1,4 @@
-import { APIAttachment, APIMessage, Attachment as AttachmentType, Message } from 'discord.js';
+import type { APIAttachment, APIMessage, Attachment as AttachmentType, Message } from 'discord.js';
 import type { RenderMessageContext } from '..';
 import { AttachmentTypes } from '../../types';
 import { formatBytes } from '../../utils/utils';
