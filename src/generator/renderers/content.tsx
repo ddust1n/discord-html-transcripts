@@ -8,7 +8,7 @@ import type { RenderMessageContext } from '../';
 import { parseDiscordEmoji } from '../../utils/utils';
 import { DiscordHighlightedCode } from './components/DiscordHighlightedCode';
 
-const DATE_TYPE_FORMATS = {
+const DATE_TYPE_FORMATS: Record<string, any> = {
 	t: { timeStyle: 'short' },
 	T: { timeStyle: 'medium' },
 	d: { dateStyle: 'short' },
@@ -16,7 +16,7 @@ const DATE_TYPE_FORMATS = {
 	f: { dateStyle: 'long', timeStyle: 'short' },
 	F: { dateStyle: 'full', timeStyle: 'short' },
 	R: { style: 'long', numeric: 'auto' }
-} as const;
+};
 
 export enum RenderType {
 	EMBED,
@@ -240,7 +240,7 @@ export async function MessageSingleASTNode({ node, context }: { node: SingleASTN
 			);
 
 		case 'timestamp':
-			return <discord-time>{new Date(node.timestamp * 1000).toLocaleString(undefined, DATE_TYPE_FORMATS[node.format])}</discord-time>;
+			return <discord-time>{new Date(node.timestamp * 1000).toLocaleString(undefined, typeof node.format === "string" ? DATE_TYPE_FORMATS[node.format] : undefined)}</discord-time>;
 
 		default: {
 			console.log(`[discord-html-transcripts] Unknown node type: ${type}`, node);
