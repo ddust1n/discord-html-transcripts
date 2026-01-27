@@ -14,7 +14,7 @@ function DiscordMediaGallery({ component }: { component: MediaGalleryComponent }
     <div style={getGalleryLayout(count)}>
       {imagesToShow.map((media, idx) => (
         <div key={idx} style={getImageStyle(idx, count)}>
-          <img
+          <img // TODO: add video support
             src={media.media.url}
             alt={media.description || 'Media content'}
             style={{

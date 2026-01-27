@@ -58,7 +58,6 @@ export const globalStyles = `
     min-height: 32px;
     min-width: 60px;
     cursor: pointer;
-    font-family: Whitney, "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-align: center;
     box-sizing: border-box;
     border: none;
@@ -93,7 +92,6 @@ export const globalStyles = `
     border-radius: 4px;
     color: #b5bac1;
     cursor: pointer;
-    font-family: Whitney, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
     display: flex;
     align-items: center;
