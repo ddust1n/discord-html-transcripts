@@ -1,6 +1,6 @@
 /// <reference path="./discord-components.d.ts" />
 
-import { AttachmentBuilder, version, Collection, type Channel, type Message, type TextBasedChannel } from 'discord.js';
+import { AttachmentBuilder, version, Collection, type Channel, type Message, type TextBasedChannel, type TextChannel } from 'discord.js';
 import DiscordMessages from './generator';
 import {
   ExportReturnType,
@@ -20,7 +20,7 @@ const versionPrefix = version.split('.')[0];
 if (versionPrefix !== '14' && versionPrefix !== '15') {
   console.error(
     `[discord-html-transcripts] Versions v3.x.x of discord-html-transcripts are only compatible with discord.js v14.x.x and v15.x.x, and you are using v${version}.` +
-      `    For v13.x.x support, please install discord-html-transcripts v2.x.x using "npm install discord-html-transcripts@^2".`
+    `    For v13.x.x support, please install discord-html-transcripts v2.x.x using "npm install discord-html-transcripts@^2".`
   );
   process.exit(1);
 }
@@ -101,7 +101,7 @@ export async function generateFromMessages<T extends ExportReturnType = ExportRe
  * @returns       The generated transcript
  */
 export async function createTranscript<T extends ExportReturnType = ExportReturnType.Attachment>(
-  channel: TextBasedChannel,
+  channel: TextBasedChannel | TextChannel,
   options: CreateTranscriptOptions<T> = {}
 ): Promise<ObjectType<T>> {
   // validate type
